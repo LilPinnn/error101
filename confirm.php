@@ -19,7 +19,7 @@ require_once('db.php');?>
   </head>
   <body>
     <section>
-      <button class="show-modal">Confirm</button>
+      
       <span class="overlay"></span>
 
       <div class="modal-box">
@@ -38,9 +38,6 @@ require_once('db.php');?>
 
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.min.css">
     <link rel="stylesheet" href="styleres.css">
     <title>Booking</title>
 </head>
@@ -90,45 +87,41 @@ require_once('db.php');?>
     
 
 <body>
+  <form method = "POST" id = "form">
     <div class="book-section">
         <div class="inner-book">
             <label>Check in</label>
-						<input type = "date" class = "form-control" name = "checkindate" required = "required" />
+      <input type = "date" class = "form-control" name = "checkindate" required = "required" />
             <label>Check out</label>
-						<input type = "date" class = "form-control" name = "checkoutdate" required = "required" />
-            <select name="chooseroom" style="">
-						<?php
-						//select USERGROUP_ID, USERGROUP_NAME from USERGROUP
-						$q3 = 'select type_name from room_type;';
-						if ($result = $mysqli->query($q3)) {
-							while ($row = $result->fetch_array()) {
-								echo '<option value="' . $row[0] . '">' . $row[0] . '</option>';
-							}
-						} else {
-							echo 'Query error: ' . $mysqli->error;
-						}
-						?>
-					  </select>
+      <input type = "date" class = "form-control" name = "checkoutdate" required = "required" />
+      <select name="chooseroom" style="">
+      <?php
+      //select USERGROUP_ID, USERGROUP_NAME from USERGROUP
+      $q3 = 'select type_name from room_type;';
+      if ($result = $mysqli->query($q3)) {
+       while ($row = $result->fetch_array()) {
+        echo '<option value="' . $row[0] . '">' . $row[0] . '</option>';
+       }
+      } else {
+       echo 'Query error: ' . $mysqli->error;
+      }
+      ?>
+       </select>
             <input type="text" name="person" placeholder="1 Person">
-          
-            <div class="book-btn">
-                <a href="confirm.php"></a>
-
-            </div>
             <?php
-	            require_once 'db.php';
-	            $type_name = $_POST['chooseroom'];
-	            $checkindate = $_POST['checkindate'];
-	            $checkoutdate = $_POST['checkoutdate'];
+             require_once 'db.php';
+             $type_name = $_POST['chooseroom'];
+             $checkindate = $_POST['checkindate'];
+             $checkoutdate = $_POST['checkoutdate'];
 
-              $query    = "INSERT into `reservation` (Checkindate, Checkoutdate, type_name) VALUES ('$checkindate','$checkoutdate','$type_name')";
-              $result   = mysqli_query($mysqli, $query);
-
-              header("Location: confirm.php");
-              ?>
+              $query    = "INSERT into reservation (Checkindate, Checkoutdate, type_name) VALUES ('$checkindate','$checkoutdate','$type_name')";
+              $result = $mysqli->query($query);
+            ?>
+        <button class="show-modal" type="submit" style="margin-left: 35%; margin-top: 19.5%;">Confirm</button>
 
         </div>
     </div>
+    </form>
 </body> 
       
     </section>
@@ -140,6 +133,7 @@ require_once('db.php');?>
         closeBtn = document.querySelector(".close-btn");
 
       showBtn.addEventListener("click", () => section.classList.add("active"));
+      
 
       overlay.addEventListener("click", () =>
         section.classList.remove("active")
